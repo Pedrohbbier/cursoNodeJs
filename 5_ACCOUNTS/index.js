@@ -146,7 +146,7 @@ function addAmount (accountName , amount){
         }
     )
 
-    console.log(chalk.green(`Foi depositado o valor de r$${amount} na sua conta!`))
+    console.log(chalk.green(`Foi depositado o valor de R$${amount} na sua conta!`))
 
 }
 
@@ -220,11 +220,25 @@ function removeAmount(accountName , ammount){
         return operation()
     }
 
-    const accountDataValue = accountData.balance
-
-    if(accountDataValue < ammount){
-        console.log(`Valor indisponivel, você está tentando sacar R$${ammount}, porém só tem R$${accountData} disponível!`)
+    if(accountData.balance < ammount){
+        console.log(`Valor indisponivel, você está tentando sacar R$${ammount}, porém só tem R$${accountData.balance} disponível!`)
         return operation()
     }
+
+    accountData.balance = parseFloat(accountData.balance) - parseFloat(ammount)
+
+    fs.writeFileSync(
+        `accounts/${accountName}.json`,
+        JSON.stringify(accountData),
+        function (err){
+            console.log(err)
+        }
+    )
+
+    console.log(`Foi realizado um saque de R$${ammount} da sua conta!`)
+
+    operation()
+
+
 
 }
