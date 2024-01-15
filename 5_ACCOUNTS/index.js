@@ -4,6 +4,8 @@ const chalk = require("chalk")
 
 //modulos internos
 const fs = require("fs")
+var crypto = require('crypto');
+
 
 operation()
 
@@ -63,7 +65,7 @@ function buildAccount(){
 
         const accountName = answer['accountName']
 
-        const password = answer['password']
+        let password = answer['password']
 
         if(!fs.existsSync('accounts')){
             fs.mkdirSync('accounts')
@@ -80,6 +82,13 @@ function buildAccount(){
             buildAccount()
             return
         }
+
+        const secret = 'abcdefg'; //criptografando a senha
+        const hash = crypto.createHmac('sha256', secret)
+                           .update(password)
+                           .digest('hex');
+
+        password = hash;
 
         let data = {
             balance: 0,
@@ -301,7 +310,13 @@ function checkPassword(accountName , inputPassword){
 
     let account = JSON.parse(data)
 
-    if(account.password === inputPassword ){
+    const secret = 'abcdefg'; // Escolha uma chave secreta adequada
+    const hash = crypto.createHmac('sha256', secret)
+                       .update(inputPassword)
+                       .digest('hex');
+    let inputPasswordCrypto = hash;
+
+    if(account.password === inputPasswordCrypto ){
         return true
     } else {
         console.log(chalk.bgRed.black('Senha incorreta, tente novamente!'))
