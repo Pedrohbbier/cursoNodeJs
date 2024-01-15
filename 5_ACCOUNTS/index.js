@@ -50,13 +50,20 @@ function createAccount(){
 
 function buildAccount(){
 
-    inquirer.prompt([{
-        name: 'accountName',
-        message: 'Digite o nome da sua conta:'
-    }]).then((answer)=>{
+    inquirer.prompt([
+        {
+            name: 'accountName',
+            message: 'Digite o nome da sua conta:'
+        },
+        {
+            name:'password',
+            message:'Crie uma senha de no mínimo seis digitos!'
+        }
+        ]).then((answer)=>{
+
         const accountName = answer['accountName']
 
-        console.info(accountName)
+        const password = answer['password']
 
         if(!fs.existsSync('accounts')){
             fs.mkdirSync('accounts')
@@ -68,7 +75,18 @@ function buildAccount(){
             return
         }
 
-        fs.writeFileSync(`accounts/${accountName}.json` , '{"balance": 0}' , function(err){
+        if(password.length < 6){
+            console.log(chalk.bgRed.black(`Sua senha precisa ter 6 digitos ou mais, começe a criação da conta novamente`))
+            buildAccount()
+            return
+        }
+
+        let data = {
+            balance: 0,
+            password: password
+        };
+
+        fs.writeFileSync(`accounts/${accountName}.json` , JSON.stringify(data) , function(err){
             console.log(err)
         })
 
@@ -88,12 +106,23 @@ function deposit(){
     inquirer.prompt([{
         name: 'accountName',
         message: 'Qual o nome da sua conta?'
-    }]).then((answer)=>{
+    },
+    {
+        name: 'password',
+        message: 'Digite a sua senha!!!'
+    }
+]).then((answer)=>{
 
         const accountName = answer['accountName']
 
+        const inputPassword  = answer['password']
+
         //verify if account exists
         if(!checkAccount(accountName)) {
+            return deposit()
+        }
+
+        if(!checkPassword(accountName , inputPassword)){
             return deposit()
         }
 
@@ -166,11 +195,22 @@ function getAccountBalance(){
     inquirer.prompt([{
         name: 'accountName',
         message: 'Qual o nome da sua conta?'
-    }]).then(answer=>{
+    },
+    {
+        name: 'password',
+        message: 'Digite a sua senha!!!'
+    }
+]).then(answer=>{
 
         const accountName = answer['accountName']
 
+        const inputPassword  = answer['password']
+
         if(!checkAccount(accountName)){
+            return getAccountBalance()
+        }
+
+        if(!checkPassword(accountName , inputPassword)){
             return getAccountBalance()
         }
 
@@ -189,12 +229,25 @@ function withDraw(){
     inquirer.prompt([{
         name:'accountName',
         message:'Qual o nome da sua conta? '
-    }]).then((answer=>{
+    },
+    {
+        name: 'password',
+        message: 'Digite a sua senha!!!'
+    }
+]).then((answer=>{
 
         const accountName = answer['accountName']
 
+        const inputPassword  = answer['password']
+
+
         if(!checkAccount(accountName)){
             return withDraw()
+        }
+
+
+        if(!checkPassword(accountName , inputPassword)){
+            return getAccountBalance()
         }
 
         inquirer.prompt([{
@@ -241,4 +294,17 @@ function removeAmount(accountName , ammount){
 
 
 
+}
+
+function checkPassword(accountName , inputPassword){
+    let data = fs.readFileSync(`accounts/${accountName}.json`, 'utf8');
+
+    let account = JSON.parse(data)
+
+    if(account.password === inputPassword ){
+        return true
+    } else {
+        console.log(chalk.bgRed.black('Senha incorreta, tente novamente!'))
+        return false
+    }
 }
