@@ -1,0 +1,132 @@
+*{
+    font-family: Helvetica;
+}
+
+h1{
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.container{
+    text-align: center;
+}
+
+.form{
+    width: 450px;
+    margin: 0 auto;
+}
+
+.form-control{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .5em;
+}
+
+.form-control label{
+    font-weight: bold;
+    margin-bottom: .3em;
+}
+
+.form control input{
+    padding: 5px;
+}
+
+.book-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-container div{
+    border-bottom: 1px solid grey;
+    padding: 5px;
+    margin: 5px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+#navbar{
+    border-bottom: 1px solid grey;
+    padding: 0.5em;
+    margin-bottom: 1em;
+}
+
+#navbar ul{
+    display: flex;
+    list-style: none;
+    margin: 0px;
+}
+
+#navbar ul li{
+    margin-left: 1em;
+}
+
+.actions{
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+}
+
+.actions a{
+    margin-right: 1em;
+}
+
+.form-checkbox {
+    flex-direction: row;
+}
+
+.form-checkbox input{
+    margin-right: 10px;
+}
+
+.container{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+.container .item {
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    padding: 20px;
+    flex: 1 1 29%;
+    max-width: 29%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.item h2 , .item p{
+    margin-bottom: 1.8em;
+}
+
+.actions{
+    display: flex;
+    justify-content: space-between;
+}
+
+.actions a , .actions input{
+    border: 1px solid #BBB;
+    border-radius: 5px;
+    text-decoration: none;
+    background-color: white;
+    padding: 5px;
+    font-size: 15px;
+    color: black;
+    cursor: pointer;
+}
+
+.actions .details-btn{
+    border-color:blue;
+    color: blue;
+}
+
+.actions .delete-btn{
+    border-color: darkred;
+    color: darkred;
+}
