@@ -4,6 +4,8 @@ const exphbs = require('express-handlebars')
 const conexao = require('./db/conexao')
 const User = require('./models/User')
 
+const Adress = require('./models/Adress')
+
 const app = express()
 
 app.use(
@@ -97,7 +99,10 @@ app.get('/' , async (req , res)=>{
     res.render('home' , {users: users})
 })
 
-conexao.sync().then(() => {
+conexao
+.sync()
+//.sync({force: true}) //Forçar a recriação do banco de dados
+.then(() => {
     app.listen(3000)
 })
 .catch((err)=>{console.log(err)})
