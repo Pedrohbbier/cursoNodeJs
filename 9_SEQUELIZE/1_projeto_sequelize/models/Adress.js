@@ -20,6 +20,7 @@ const Adress = db.define('Adress' , {
     }
 })
 
+User.hasMany(Adress)//um usuário tem muitos endereços
 Adress.belongsTo(User) //endereço pertençe ao usuário
 
 module.exports = Adress
