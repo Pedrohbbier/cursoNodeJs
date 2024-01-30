@@ -92,6 +92,24 @@ app.post('/users/update' , async (req , res)=>{
 
 })
 
+app.post('/adress/create' , async (req , res)=>{
+    const UserId = req.body.UserId
+    const street = req.body.street
+    const number = req.body.number
+    const city = req.body.city
+
+    const adress= {
+        UserId,
+        street,
+        number,
+        city
+    }
+
+    await Adress.create(adress)
+
+    res.redirect(`/users/edit/${UserId}`)
+})
+
 app.get('/' , async (req , res)=>{
 
    const users = await User.findAll({raw: true}) //raw é necessário para puaxar apenas os dados
